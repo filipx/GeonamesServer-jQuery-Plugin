@@ -34,3 +34,7 @@ If you build a custom theme, use the widget's specific CSS file as a starting po
 </script>
 ```
 
+##License
+
+This project is licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
