@@ -36,9 +36,9 @@
     };
 
     // Handles request to the remote geoname server
-    var RequestManager = function(targetUrl) {
+    var RequestManager = function(server) {
         var _request = false;
-        var _endpoint = targetUrl;
+        var _endpoint = server;
 
         this.search = function(datas, errorCallback, callback) {
             _request = $.ajax({
@@ -286,15 +286,15 @@
     var methods = {
         init: function(options) {
             var settings = $.extend({
-                targetUrl: ''
+                server: ''
             }, options);
 
-            if ('' === settings.targetUrl) {
-                throw '"targetUrl" mus be set'
+            if ('' === settings.server) {
+                throw '"server" mus be set'
             }
 
             return this.each(function() {
-                var geocompleter = new GeotoCompleter(this, settings.targetUrl, settings);
+                var geocompleter = new GeotoCompleter(this, settings.server, settings);
                 geocompleter.init();
             });
         },

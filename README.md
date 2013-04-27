@@ -24,7 +24,7 @@ If you build a custom theme, use the widget's specific CSS file as a starting po
 
 <script type="text/javascript">
     $("#geoname-id").geocompleter({
-        "targetUrl": "http://geonames-server.url/"
+        "server": "http://geonames-server.tld/"
     });
 </script>
 ```
