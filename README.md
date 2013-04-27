@@ -1,5 +1,7 @@
 # Geonames Server jQuery Plugin
 
+[![Build Status](https://travis-ci.org/alchemy-fr/GeonamesServer-jQuery-Plugin.png?branch=master)](https://travis-ci.org/alchemy-fr/GeonamesServer-jQuery-Plugin)
+
 This jQuery plugin allows auto-completion for locations in an `<input>` HTML tag.
 
 It requires an acces to a working [Geonames Server](https://github.com/alchemy-fr/GeonamesServer).
