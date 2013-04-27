@@ -1,4 +1,3 @@
-;
 (function(window, $) {
     'use strict';
 
@@ -97,7 +96,7 @@
     };
 
     GeotoCompleter.prototype.getOption = function(name) {
-        if (!name in this._opts) {
+        if (!(name in this._opts)) {
             return null;
         }
 
@@ -105,7 +104,7 @@
     };
 
     GeotoCompleter.prototype.setOption = function(name, value) {
-        if (!name in this._opts) {
+        if (!(name in this._opts)) {
             return this;
         }
 
@@ -192,7 +191,7 @@
         this.$el.after(this.$input);
 
         // Overrides prototype to render values without autoescape, useful to highlight values
-        $.ui.autocomplete.prototype["_renderItem"] = function( ul, item) {
+        $.ui.autocomplete.prototype._renderItem = function( ul, item) {
             return $( "<li></li>" )
               .data( "item.autocomplete", item )
               .append( $( "<a></a>" ).html( item.label ) )

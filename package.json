@@ -1,0 +1,11 @@
+{
+    "name": "geonames-server-jquery-plugin",
+    "version": "0.1.0",
+    "main": "jquery.geonames.js",
+    "scripts": {
+        "test": "make test"
+    },
+    "devDependencies": {
+        "jshint": "~1.0"
+    }
+}
