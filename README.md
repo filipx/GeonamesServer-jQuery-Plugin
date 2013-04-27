@@ -14,7 +14,7 @@ which requires :
  - [Position] (http://api.jqueryui.com/position/)
  - [Menu](http://api.jqueryui.com/menu/)
 
-*note* : This widget requires some functional CSS, otherwise it won't work.
+*note* : This widget requires some functional CSS, otherwise it would not work.
 If you build a custom theme, use the widget's specific CSS file as a starting point.
 
 ## Usage
