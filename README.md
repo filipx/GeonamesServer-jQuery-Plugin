@@ -1,13 +1,8 @@
-# Geonames Server Jquery Plugin
+# Geonames Server jQuery Plugin
 
-## How it works
+This jQuery plugin allows auto-completion for locations in an `<input>` HTML tag.
 
-This jquery plugin binds a **geoname-id** field to a geonames server.
-
-It will create an additional input that will list all data from the
-[Geonames Server](https://github.com/alchemy-fr/GeonamesServer)
- according to the user query and fill the origin input with the proper
-geoname-id.
+It requires an acces to a working [Geonames Server](https://github.com/alchemy-fr/GeonamesServer).
 
 ## Dependencies
 
@@ -22,7 +17,7 @@ which requires :
 *note* : This widget requires some functional CSS, otherwise it won't work.
 If you build a custom theme, use the widget's specific CSS file as a starting point.
 
-## Example
+## Usage
 
 ```html
 <input id="geoname-id" value="" />
@@ -34,7 +29,7 @@ If you build a custom theme, use the widget's specific CSS file as a starting po
 </script>
 ```
 
-##License
+## License
 
 This project is licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
