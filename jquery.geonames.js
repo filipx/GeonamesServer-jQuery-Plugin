@@ -2,40 +2,46 @@
 (function(window, $) {
     'use strict';
 
-    // build a uniq id which is 4 chars long
+    // Builds a 4 characters unique id
     var uniqId = function(prefix) {
         prefix = prefix || '';
 
         return prefix + ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).substr(-4);
     };
 
-    // Build query parameters from a geoname object
+    // Builds query parameters from a geoname object
     var RequestDataBuilder = function(geo, datas) {
         this.datas = datas || {};
 
         if (!geo instanceof GeotoCompleter) {
-           throw 'You must provide an instance of Geotocompleter';
+           throw 'You must provide an instance of GeotoCompleter';
         }
 
-        if (geo.getOption('sort'))
+        if (geo.getOption('sort')) {
             this.datas.sort = geo.getOption('sort');
-        if (geo.getOption('sortParams'))
+        }
+        if (geo.getOption('sortParams')) {
             this.datas.sortParams = geo.getOption('sortParams');
-        if (geo.getOption('order'))
+        }
+        if (geo.getOption('order')) {
             this.datas.order = geo.getOption('order');
-        if (geo.getOption('country'))
+        }
+        if (geo.getOption('country')) {
             this.datas.country = geo.getOption('country');
-        if (geo.getOption('name'))
+        }
+        if (geo.getOption('name')) {
             this.datas.name = geo.getOption('name');
-        if (geo.getOption('limit'))
+        }
+        if (geo.getOption('limit')) {
             this.datas.limit = geo.getOption('limit');
+        }
     };
 
     RequestDataBuilder.prototype.getRequestDatas = function() {
         return this.datas;
     };
 
-    // Handles request to the remote geoname server
+    // Handles request to the remote Geonames Server
     var RequestManager = function(server) {
         var _request = false;
         var _endpoint = server;
@@ -91,15 +97,17 @@
     };
 
     GeotoCompleter.prototype.getOption = function(name) {
-        if (!name in this._opts)
+        if (!name in this._opts) {
             return null;
+        }
 
         return this._opts[name];
     };
 
     GeotoCompleter.prototype.setOption = function(name, value) {
-        if (!name in this._opts)
+        if (!name in this._opts) {
             return this;
+        }
 
         this._opts[name] = value;
 
@@ -150,13 +158,13 @@
             return s.replace(matcher, "<span class='highlight'>$1</span>");
         };
 
-        // Create city input
+        // Creates city input
         this.$input = $('<input />')
                 .attr('name', uniqId(this.$el.attr('name')))
                 .attr('id', uniqId(this.$el.attr('id')))
                 .attr('type', 'text');
 
-        // Prevent form submission when pressing ENTER
+        // Prevents form submission when pressing ENTER
         this.$input.keypress(function(event) {
             var code = (event.keyCode ? event.keyCode : event.which);
             if(code === $.ui.keyCode.ENTER ) {
@@ -165,7 +173,7 @@
             }
         });
 
-        // On any keyup except (esc,up,down, enter) fields are desynchronised, reset geonames field
+        // On any keyup except (esc, up, down, enter) fields are desynchronised, reset geonames field
         this.$input.keyup(function(event) {
             var code = (event.keyCode ? event.keyCode : event.which);
             var unBindKeys = [
@@ -183,7 +191,7 @@
         this.$el.hide();
         this.$el.after(this.$input);
 
-        // Override prototype to render values without autoescape, usefull to highlight values
+        // Overrides prototype to render values without autoescape, useful to highlight values
         $.ui.autocomplete.prototype["_renderItem"] = function( ul, item) {
             return $( "<li></li>" )
               .data( "item.autocomplete", item )
@@ -191,10 +199,10 @@
               .appendTo( ul );
         };
 
-        // Save response content
+        // Saves response content
         var responseContent;
 
-        // Build a jquery autocompleter
+        // Builds a jquery autocompleter
         this.$input.autocomplete({
             source: function(request, response) {
                 var name, country, terms;
@@ -238,7 +246,7 @@
 
                 if (ui.content) {
                     responseContent = ui.content;
-                    // Set geoname id if value are re synchronized
+                    // Sets geoname id if values are re synchronized
                     if (ui.content.length > 0 && ui.content[0].value === self.$input.val()) {
                         updateGeonameField(ui.content[0].geonameid);
                     }
@@ -251,7 +259,7 @@
             },
             focus: function (event, ui) {
                 var code = (event.keyCode ? event.keyCode : event.which);
-                // Update geoname ID only if key up and key down are pressed
+                // Updates geoname ID only if key up and key down are pressed
                 if (ui.item && -1 !== $.inArray(code, [$.ui.keyCode.DOWN, $.ui.keyCode.UP])) {
                     updateGeonameField(ui.item.geonameid);
                 }
@@ -275,7 +283,7 @@
                         return false;
                     }
 
-                    // Reset both field as nothing is no more sychronized
+                    // Resets both field as nothing is no more sychronized
                     resetGeonameField();
                     resetCityField();
                 }
@@ -290,7 +298,7 @@
             }, options);
 
             if ('' === settings.server) {
-                throw '"server" mus be set'
+                throw '"server" must be set';
             }
 
             return this.each(function() {
