@@ -9,5 +9,4 @@ all: $(patsubst %.js,%.min.js,$(filter-out %.min.js,$(wildcard *.js)))
 	yui-compressor $< -o $@
 
 test:
-	./node_modules/.bin/jshint *jquery.geonames.js
-
+	./node_modules/.bin/jshint *jquery.geonames.js &&  phantomjs ./tests/run-qunit.js file://`pwd`/tests/index.html
