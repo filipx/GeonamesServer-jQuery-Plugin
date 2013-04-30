@@ -121,6 +121,7 @@
         if (this.$input) {
             this.$input.remove();
             this.$el.show();
+            this.$el.val('');
             this.$el.data('geocompleter', null);
         }
     };
@@ -179,6 +180,8 @@
                 $.ui.keyCode.ESCAPE,
                 $.ui.keyCode.UP,
                 $.ui.keyCode.DOWN,
+                $.ui.keyCode.LEFT,
+                $.ui.keyCode.RIGHT,
                 $.ui.keyCode.ENTER
             ];
 
@@ -242,12 +245,18 @@
             },
             response: function (event, ui) {
                 responseContent = [];
-
                 if (ui.content) {
                     responseContent = ui.content;
                     // Sets geoname id if values are re synchronized
-                    if (ui.content.length > 0 && ui.content[0].value === self.$input.val()) {
-                        updateGeonameField(ui.content[0].geonameid);
+                    if (ui.content.length > 0) {
+                        var items = $.grep(ui.content, function(item) {
+                            return item.value == self.$input.val() ? item : null;
+                        });
+
+                        if (items.length > 0) {
+                            updateGeonameField(items[0].geonameid);
+                        }
+
                     }
                 }
             },
@@ -271,12 +280,12 @@
                     if (isGeonameFieldSetted() && responseContent.length > 0) {
                         var geonameId = self.$el.val();
                         // Update city input according to the setted geonameId
-                        var responseValue = $.grep(responseContent, function(item) {
+                        var responseValues = $.grep(responseContent, function(item) {
                             return item.geonameid == geonameId ? item : null;
                         });
 
-                        if (responseValue) {
-                            self.$input.val(responseValue['0'].value);
+                        if (responseValues.length > 0) {
+                            self.$input.val(responseValues[0].value);
                         }
 
                         return false;
@@ -314,9 +323,10 @@
             });
         },
         autocompleter: function() {
+            var args = arguments;
             return this.each(function() {
                 var geocompleter = $(this).data('geocompleter');
-                geocompleter.getAutocompleter().autocomplete.apply(this, arguments);
+                $.fn.autocomplete.apply(geocompleter.getAutocompleter(),args);
             });
         }
     };
