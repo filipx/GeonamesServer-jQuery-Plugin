@@ -45,11 +45,11 @@
         var _request = false;
         var _endpoint = server;
 
-        this.search = function(datas, errorCallback, callback) {
+        this.search = function(datas, errorCallback, parseresults) {
             _request = $.ajax({
                 type: "GET",
                 dataType: "jsonp",
-                jsonpCallback: "callback",
+                jsonpCallback: "parseresults",
                 url: _endpoint + 'city',
                 beforeSend: function() {
                     if (_request && typeof _request.abort === 'function') {
@@ -59,7 +59,7 @@
                 error: errorCallback,
                 data: datas
             })
-            .done(callback)
+            .done(parseresults)
             .always(function() {
                 _request = false;
             });
@@ -227,12 +227,19 @@
 
                 self._requestManager.search(
                     requestDataBuilder.getRequestDatas(),
-                    function(jqXhr, status, error) {}, function(data) {
-                        response($.map(data.geonames.geoname || {}, function(item) {
+                    function(jqXhr, status, error) {
+                        response([]);
+                        self.$input.trigger('geotocompleter.request.error', [jqXhr, status, error]);
+                    }, function(data) {
+                        response($.map(data || [], function(item) {
                             var country = country ? country : name;
+                            var labelName = highlight(item.name, name);
+                            var labelCountry = highlight((item.country ? item.country.name || '' : ''), country);
+                            var labelRegion = highlight((item.region ? item.region.name || '' : ''), name);
+
                             return {
-                                label: highlight(item.title, name) + ", " + highlight(item.country || '', country) + "<span class='region'>" + highlight(item.region || '', name) + "</span>",
-                                value: item.title +  (item.country ? ", " + item.country : ''),
+                                label:  labelName + ("" !== labelCountry ? ", " + labelCountry : "") + ("" !== labelRegion ? " <span class='region'>" + labelRegion + "</span>" : ""),
+                                value: item.name + (item.country ? ", " + item.country.name : ''),
                                 geonameid: item.geonameid
                             };
                         }));
@@ -250,13 +257,12 @@
                     // Sets geoname id if values are re synchronized
                     if (ui.content.length > 0) {
                         var items = $.grep(ui.content, function(item) {
-                            return item.value == self.$input.val() ? item : null;
+                            return item.value === self.$input.val() ? item : null;
                         });
 
                         if (items.length > 0) {
                             updateGeonameField(items[0].geonameid);
                         }
-
                     }
                 }
             },
@@ -274,6 +280,11 @@
             },
             close : function (event, ui) {
                 var ev = event.originalEvent;
+
+                if ("undefined" === typeof ev) {
+                    return false;
+                }
+
                 var code = (ev.keyCode ? ev.keyCode : ev.which);
                 // If esc key is pressed or user leaves the input
                 if ((ev.type === "keydown" && code === $.ui.keyCode.ESCAPE) || ev.type === "blur") {
@@ -281,7 +292,7 @@
                         var geonameId = self.$el.val();
                         // Update city input according to the setted geonameId
                         var responseValues = $.grep(responseContent, function(item) {
-                            return item.geonameid == geonameId ? item : null;
+                            return item.geonameid === geonameId ? item : null;
                         });
 
                         if (responseValues.length > 0) {
