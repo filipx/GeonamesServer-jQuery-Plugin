@@ -303,7 +303,7 @@
                     resetCityField();
                 }
             }
-        }).autocomplete("widget").addClass("geotocompleter-menu");
+        }).autocomplete("widget").addClass("geocompleter-menu");
     };
 
     var methods = {
