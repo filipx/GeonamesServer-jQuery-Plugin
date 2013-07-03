@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### 0.2.0 (2013-07-xx)
+### 0.2.0 (2013-07-03)
 
   * Update response parsing with latest geonames server response schema
   * Update option settings with latest geonames server options
