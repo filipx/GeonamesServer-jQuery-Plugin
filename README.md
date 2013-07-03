@@ -74,8 +74,6 @@ If you build a custom theme, use the widget's specific CSS file as a starting po
 </script>
 ```
 
-
-
 ## Run tests
 
 This plugin is testable. You need [PhantomJS](http://phantomjs.org/) to run the test suite.
