@@ -19,11 +19,8 @@
         if (geo.getOption('sort')) {
             this.datas.sort = geo.getOption('sort');
         }
-        if (geo.getOption('sortParams')) {
+        if (geo.getOption('client-ip')) {
             this.datas.sortParams = geo.getOption('sortParams');
-        }
-        if (geo.getOption('order')) {
-            this.datas.order = geo.getOption('order');
         }
         if (geo.getOption('country')) {
             this.datas.country = geo.getOption('country');
@@ -82,12 +79,11 @@
         this.$el = $(el);
 
         this._opts = $.extend({
-            name: null,
-            sort: null,
-            sortParams: null,
-            order: null,
-            country: null,
-            limit: null
+            "name": null,
+            "sort": null,
+            "client-ip": null,
+            "country": null,
+            "limit": null
         }, options);
 
         this.$input = null;
@@ -235,7 +231,7 @@
                             var country = country ? country : name;
                             var labelName = highlight(item.name, name);
                             var labelCountry = highlight((item.country ? item.country.name || '' : ''), country);
-                            var labelRegion = highlight((item.region ? item.region.name || '' : ''), name);
+                            var labelRegion = highlight((item.region ? item.region.name || '' : ''), name);
 
                             return {
                                 label:  labelName + ("" !== labelCountry ? ", " + labelCountry : "") + ("" !== labelRegion ? " <span class='region'>" + labelRegion + "</span>" : ""),
@@ -307,7 +303,7 @@
                     resetCityField();
                 }
             }
-        });
+        }).autocomplete("widget").addClass("geotocompleter-menu");
     };
 
     var methods = {
@@ -337,13 +333,17 @@
             var args = arguments;
             return this.each(function() {
                 var geocompleter = $(this).data('geocompleter');
-                $.fn.autocomplete.apply(geocompleter.getAutocompleter(),args);
+                if (args[0] === "on" && typeof args[1] === "string" && typeof args[2] === "function") {
+                    // Bind addition events
+                    geocompleter.getAutocompleter().on(args[1], args[2]);
+                } else {
+                    $.fn.autocomplete.apply(geocompleter.getAutocompleter(),args);
+                }
             });
         }
     };
 
     $.fn.geocompleter = function(method) {
-
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof method === 'object' || !method) {

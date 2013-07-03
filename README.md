@@ -26,8 +26,51 @@ If you build a custom theme, use the widget's specific CSS file as a starting po
 
 <script type="text/javascript">
     $("#geoname-id").geocompleter({
-        "server": "http://geonames-server.tld/"
+        "server": "http://geonames-server.tld/",
+        "limit" : 30,
+        "sort" : "population"
     });
+</script>
+```
+
+## Options
+
+- **sort** (optional, string, default value : population) available values :
+
+  - population : The results will be sorted by population.
+  - closeness : The results will be sorted by closeness to the place the request was sent from.
+
+- **name** (optional, string) : Filters city whose begins with a given name.
+
+- **country** (optional, string) : Only cities located in countries whose name begins with this parameter will be returned.
+
+- **limit** (optional, string) : The number of results.
+
+- **client-ip** (optional, string) : This parameter is used within the *closeness* sort parameter to provide a custom remote IP. `/city?sort=closeness&client-ip=80.12.81.19`
+
+## Advanced usage
+
+```html
+<input id="geoname-id" value="" />
+
+<script type="text/javascript">
+    var geocompleter = $("#geoname-id").geocompleter({
+        "server": "http://geonames-server.tld/",
+    });
+
+    // You can override any option of the jquery ui autocomplete widget
+    // see available options http://api.jqueryui.com/autocomplete/
+
+    // setter
+    geocompleter.geocompleter("autocompleter", "option", "disabled", true);
+    //getter
+    geocompleter.geocompleter("autocompleter", "option", "disabled");
+
+    // You can bind your own callback to the jquery ui autocomplete events
+    geotocompleter("autocompleter", "on", "autocompletechange", function(event, ui) {});
+
+    // This plugin defines a custom event when ajax request to the geonames server fails
+    geocompleter.geocompleter("autocompleter", "on", "geotocompleter.request.error", function(jqXhr, status, error) {});
 </script>
 ```
 
