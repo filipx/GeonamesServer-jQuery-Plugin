@@ -158,7 +158,8 @@
         this.$input = $('<input />')
                 .attr('name', uniqId(this.$el.attr('name')))
                 .attr('id', uniqId(this.$el.attr('id')))
-                .attr('type', 'text');
+                .attr('type', 'text')
+                .addClass("geocompleter-input");
 
         // Prevents form submission when pressing ENTER
         this.$input.keypress(function(event) {
@@ -203,7 +204,7 @@
         // Builds a jquery autocompleter
         this.$input.autocomplete({
             source: function(request, response) {
-                var name, country, terms;
+                var name, country, terms = '';
 
                 terms = request.term.split(',');
 
@@ -214,18 +215,17 @@
                 name = terms.pop();
 
                 self.setOption('name', $.trim(name));
-
-                if (country) {
-                    self.setOption('country', $.trim(country));
-                }
+                self.setOption('country', $.trim(country));
 
                 var requestDataBuilder = new RequestDataBuilder(self);
 
                 self._requestManager.search(
                     requestDataBuilder.getRequestDatas(),
                     function(jqXhr, status, error) {
-                        response([]);
-                        self.$input.trigger('geotocompleter.request.error', [jqXhr, status, error]);
+                        if (jqXhr.status !== 0 && jqXhr.statusText !== 'abort') {
+                            response([]);
+                            self.$input.trigger('geotocompleter.request.error', [jqXhr, status, error]);
+                        }
                     }, function(data) {
                         response($.map(data || [], function(item) {
                             var country = country ? country : name;
