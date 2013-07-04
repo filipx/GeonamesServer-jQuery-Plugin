@@ -208,7 +208,7 @@
             create: function(event) {
                 if(self.$el.val !== "" && self.getOption("init-input")) {
                     self._requestManager.search(
-                        "city/" + parseInt(self.$el.val()),
+                        "city/" + parseInt(self.$el.val(), 10),
                         {},
                         function(jqXhr, status, error) {
                             return;
