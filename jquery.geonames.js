@@ -42,12 +42,12 @@
         var _request = false;
         var _endpoint = server;
 
-        this.search = function(datas, errorCallback, parseresults) {
+        this.search = function(resource, datas, errorCallback, parseresults) {
             _request = $.ajax({
                 type: "GET",
                 dataType: "jsonp",
                 jsonpCallback: "parseresults",
-                url: _endpoint + 'city',
+                url: _endpoint + resource,
                 beforeSend: function() {
                     if (_request && typeof _request.abort === 'function') {
                         _request.abort();
@@ -83,7 +83,8 @@
             "sort": null,
             "client-ip": null,
             "country": null,
-            "limit": null
+            "limit": null,
+            "init-input": true
         }, options);
 
         this.$input = null;
@@ -151,7 +152,7 @@
 
         var highlight = function (s, t) {
             var matcher = new RegExp("("+$.ui.autocomplete.escapeRegex(t)+")", "ig" );
-            return s.replace(matcher, "<span class='highlight'>$1</span>");
+            return s.replace(matcher, "<span class='ui-state-highlight'>$1</span>");
         };
 
         // Creates city input
@@ -159,6 +160,7 @@
                 .attr('name', uniqId(this.$el.attr('name')))
                 .attr('id', uniqId(this.$el.attr('id')))
                 .attr('type', 'text')
+                .attr('class', this.$el.attr('class'))
                 .addClass("geocompleter-input");
 
         // Prevents form submission when pressing ENTER
@@ -203,6 +205,20 @@
 
         // Builds a jquery autocompleter
         this.$input.autocomplete({
+            create: function(event) {
+                if(self.$el.val !== "" && self.getOption("init-input")) {
+                    self._requestManager.search(
+                        "city/" + parseInt(self.$el.val()),
+                        {},
+                        function(jqXhr, status, error) {
+                            return;
+                        }, function (data) {
+                            var country = data.country.name || "";
+                            self.$input.val(data.name + ("" !== country ? "," + country : ""));
+                        }
+                    );
+                }
+            },
             source: function(request, response) {
                 var name, country, terms = '';
 
@@ -220,6 +236,7 @@
                 var requestDataBuilder = new RequestDataBuilder(self);
 
                 self._requestManager.search(
+                    "city",
                     requestDataBuilder.getRequestDatas(),
                     function(jqXhr, status, error) {
                         if (jqXhr.status !== 0 && jqXhr.statusText !== 'abort') {
@@ -304,6 +321,13 @@
                 }
             }
         }).autocomplete("widget").addClass("geocompleter-menu");
+
+        var onInit = self.getOption('onInit');
+
+        // On Initialization callback
+        if (onInit !== null && typeof onInit === 'function') {
+            onInit(this.$el, this.$input);
+        }
     };
 
     var methods = {

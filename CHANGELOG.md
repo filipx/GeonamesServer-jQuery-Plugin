@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### 0.2.1 (2013-xx-xx)
+
+  * Add "onInit" option callback for plugin modularity
+  * Add "init-input" option to initialize the autocompleter with a geoname-id
+  * Fix issue : Autocomplete input does not keep previous set class
+  * Replace "highlight" class by "ui-state-highlight" for jquery-ui themes compatibility
+
 ### 0.2.0 (2013-07-03)
 
   * Update response parsing with latest geonames server response schema
