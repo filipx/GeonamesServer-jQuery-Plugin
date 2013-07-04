@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### 0.2.1 (2013-xx-xx)
+### 0.2.1 (2013-07-04)
 
   * Add "onInit" option callback for plugin modularity
   * Add "init-input" option to initialize the autocompleter with a geoname-id

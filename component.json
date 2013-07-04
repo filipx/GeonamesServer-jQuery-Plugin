@@ -1,6 +1,6 @@
 {
   "name": "GeonamesServer-jQuery-Plugin",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "jquery.geonames.js",
   "dependencies": {
     "jquery": "~1.6",
