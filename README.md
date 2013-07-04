@@ -48,6 +48,10 @@ If you build a custom theme, use the widget's specific CSS file as a starting po
 
 - **client-ip** (optional, string) : This parameter is used within the *closeness* sort parameter to provide a custom remote IP. `/city?sort=closeness&client-ip=80.12.81.19`
 
+- **init-input** (optional, boolean) : option to initialize the autocompleter with a geoname-id
+
+- **onInit** (optional, function) : callback triggered after plugin initialization, it takes original input and autocomplete input as arguments
+
 ## Advanced usage
 
 ```html
