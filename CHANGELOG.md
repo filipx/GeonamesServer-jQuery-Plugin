@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 0.2.2 (2015-11-27)
+
+  * Fix typo on jquery $el.val() method call
+  * Add phantomjs as npm dev dependency
+  * Update phantomjs bin path in makefile
+
 ### 0.2.1 (2013-07-04)
 
   * Add "onInit" option callback for plugin modularity
