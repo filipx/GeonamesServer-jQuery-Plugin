@@ -206,7 +206,7 @@
         // Builds a jquery autocompleter
         this.$input.autocomplete({
             create: function(event) {
-                if(self.$el.val !== "" && self.getOption("init-input")) {
+                if(self.$el.val() !== "" && self.getOption("init-input")) {
                     self._requestManager.search(
                         "city/" + parseInt(self.$el.val(), 10),
                         {},
