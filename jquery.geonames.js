@@ -336,9 +336,9 @@
                 server: ''
             }, options);
 
-            if ('' === settings.server) {
-                throw '"server" must be set';
-            }
+            // if ('' === settings.server) {
+            //     throw '"server" must be set';
+            // }
 
             return this.each(function() {
                 var geocompleter = new GeotoCompleter(this, settings.server, settings);
